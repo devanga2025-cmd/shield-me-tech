@@ -2,20 +2,21 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { 
   AlertTriangle, 
   Phone, 
   MapPin, 
-  Upload, 
   Shield,
   LogOut,
   Heart,
   Info,
   User
 } from "lucide-react";
+import { LivePhotoCapture } from "@/components/LivePhotoCapture";
+import { LiveVideoRecorder } from "@/components/LiveVideoRecorder";
+import { LiveAudioRecorder } from "@/components/LiveAudioRecorder";
+import { FeedbackForm } from "@/components/FeedbackForm";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -56,12 +57,6 @@ const Dashboard = () => {
     }
   };
 
-  const handleFileUpload = (type: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      toast.success(`${type} uploaded successfully: ${file.name}`);
-    }
-  };
 
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
@@ -218,7 +213,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          {/* Evidence Upload & User Profile */}
+          {/* User Profile & Live Capture */}
           <div className="space-y-8">
             <Card className="shadow-soft">
               <CardHeader>
@@ -253,56 +248,18 @@ const Dashboard = () => {
               </CardContent>
             </Card>
 
-            <Card className="shadow-soft">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Upload className="w-6 h-6 text-primary" />
-                  Upload Evidence
-                </CardTitle>
-                <CardDescription>
-                  Upload videos, audio, or photos for documentation
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="video">Upload Video</Label>
-                  <Input
-                    id="video"
-                    type="file"
-                    accept="video/*"
-                    onChange={handleFileUpload("Video")}
-                    className="cursor-pointer"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="audio">Upload Audio</Label>
-                  <Input
-                    id="audio"
-                    type="file"
-                    accept="audio/*"
-                    onChange={handleFileUpload("Audio")}
-                    className="cursor-pointer"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="image">Upload Photo</Label>
-                  <Input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileUpload("Photo")}
-                    className="cursor-pointer"
-                  />
-                </div>
-
-                <p className="text-xs text-muted-foreground">
-                  All uploads are securely stored and can be used as evidence if needed.
-                </p>
-              </CardContent>
-            </Card>
+            <LivePhotoCapture />
           </div>
+        </div>
+
+        {/* Live Recording & Feedback Section */}
+        <div className="grid lg:grid-cols-2 gap-8 mt-8">
+          <LiveVideoRecorder />
+          <LiveAudioRecorder />
+        </div>
+
+        <div className="mt-8">
+          <FeedbackForm />
         </div>
       </div>
     </div>
