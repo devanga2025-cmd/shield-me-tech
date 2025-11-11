@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { 
   AlertTriangle, 
@@ -17,12 +19,14 @@ import { LivePhotoCapture } from "@/components/LivePhotoCapture";
 import { LiveVideoRecorder } from "@/components/LiveVideoRecorder";
 import { LiveAudioRecorder } from "@/components/LiveAudioRecorder";
 import { FeedbackForm } from "@/components/FeedbackForm";
+import LocationMap from "@/components/LocationMap";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [showEmergencyInfo, setShowEmergencyInfo] = useState(false);
+  const [mapboxToken, setMapboxToken] = useState<string>("");
 
   useEffect(() => {
     const user = localStorage.getItem("currentUser");
@@ -115,7 +119,7 @@ const Dashboard = () => {
             </Button>
 
             {showEmergencyInfo && (
-              <div className="bg-muted p-6 rounded-lg animate-scale-in">
+              <div className="bg-muted p-6 rounded-lg animate-scale-in space-y-6">
                 <h3 className="font-bold text-xl mb-4 text-destructive flex items-center justify-center gap-2">
                   <Heart className="w-6 h-6" />
                   We are here to help you!
@@ -126,6 +130,41 @@ const Dashboard = () => {
                     Your location: {location.lat.toFixed(4)}, {location.lng.toFixed(4)}
                   </p>
                 )}
+
+                {/* Mapbox Token Input */}
+                {!mapboxToken && (
+                  <div className="bg-card p-4 rounded-lg border border-border">
+                    <Label htmlFor="mapboxToken" className="text-sm font-semibold mb-2 block">
+                      Enter your Mapbox Public Token to view location map
+                    </Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="mapboxToken"
+                        type="text"
+                        placeholder="pk.eyJ1..."
+                        onChange={(e) => setMapboxToken(e.target.value)}
+                        className="flex-1"
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Get your free token at{" "}
+                      <a 
+                        href="https://mapbox.com" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        mapbox.com
+                      </a>
+                    </p>
+                  </div>
+                )}
+
+                {/* Location Map */}
+                {location && mapboxToken && (
+                  <LocationMap location={location} mapboxToken={mapboxToken} />
+                )}
+
                 <div className="grid md:grid-cols-2 gap-4 text-left">
                   <div className="bg-card p-4 rounded-lg">
                     <h4 className="font-semibold mb-2 flex items-center gap-2">
