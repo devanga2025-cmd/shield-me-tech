@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { toast } from 'sonner';
+import { getMapboxToken } from '@/config/mapbox';
 
 interface LocationMapProps {
   location: { lat: number; lng: number };
-  mapboxToken: string;
 }
 
 interface SafePlace {
@@ -16,12 +16,13 @@ interface SafePlace {
   distance?: number;
 }
 
-const LocationMap = ({ location, mapboxToken }: LocationMapProps) => {
+const LocationMap = ({ location }: LocationMapProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const marker = useRef<mapboxgl.Marker | null>(null);
   const safePlaceMarkers = useRef<mapboxgl.Marker[]>([]);
   const [safePlaces, setSafePlaces] = useState<SafePlace[]>([]);
+  const mapboxToken = getMapboxToken();
 
   // Fetch nearby safe places
   const fetchNearbySafePlaces = async (lat: number, lng: number) => {

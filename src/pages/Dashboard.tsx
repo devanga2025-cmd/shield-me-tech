@@ -26,7 +26,6 @@ const Dashboard = () => {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [showEmergencyInfo, setShowEmergencyInfo] = useState(false);
-  const [mapboxToken, setMapboxToken] = useState<string>("");
 
   useEffect(() => {
     const user = localStorage.getItem("currentUser");
@@ -131,38 +130,15 @@ const Dashboard = () => {
                   </p>
                 )}
 
-                {/* Mapbox Token Input */}
-                {!mapboxToken && (
-                  <div className="bg-card p-4 rounded-lg border border-border">
-                    <Label htmlFor="mapboxToken" className="text-sm font-semibold mb-2 block">
-                      Enter your Mapbox Public Token to view location map
-                    </Label>
-                    <div className="flex gap-2">
-                      <Input
-                        id="mapboxToken"
-                        type="text"
-                        placeholder="pk.eyJ1..."
-                        onChange={(e) => setMapboxToken(e.target.value)}
-                        className="flex-1"
-                      />
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-2">
-                      Get your free token at{" "}
-                      <a 
-                        href="https://mapbox.com" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline"
-                      >
-                        mapbox.com
-                      </a>
-                    </p>
-                  </div>
-                )}
 
                 {/* Location Map */}
-                {location && mapboxToken && (
-                  <LocationMap location={location} mapboxToken={mapboxToken} />
+                {location && (
+                  <div className="mt-4">
+                    <LocationMap location={location} />
+                    <p className="text-xs text-muted-foreground mt-2 text-center">
+                      💡 Update your Mapbox token in <code className="bg-muted px-1 py-0.5 rounded">src/config/mapbox.ts</code>
+                    </p>
+                  </div>
                 )}
 
                 <div className="grid md:grid-cols-2 gap-4 text-left">
