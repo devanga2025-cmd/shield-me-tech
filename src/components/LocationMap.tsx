@@ -26,6 +26,7 @@ const LocationMap = ({ location }: LocationMapProps) => {
   const [selectedPlace, setSelectedPlace] = useState<SafePlace | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const apiKey = getGoogleMapsApiKey();
+  const hasValidKey = !!apiKey && !/YOUR_GOOGLE_MAPS_API_KEY_HERE/i.test(String(apiKey));
 
   // Fetch nearby safe places using Google Places API
   const fetchNearbySafePlaces = (map: google.maps.Map) => {
@@ -92,81 +93,95 @@ const LocationMap = ({ location }: LocationMapProps) => {
 
   return (
     <div className="relative w-full rounded-lg overflow-hidden shadow-glow border border-border">
-      <LoadScript 
-        googleMapsApiKey={apiKey} 
-        libraries={['places']}
-        onLoad={() => setIsLoaded(true)}
-      >
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          center={location}
-          zoom={14}
-          onLoad={(map) => {
-            fetchNearbySafePlaces(map);
-          }}
-          options={{
-            zoomControl: true,
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: true,
+      {!hasValidKey ? (
+        <div className="p-4 text-center">
+          <p className="text-sm text-muted-foreground">
+            Google Maps API key not configured. Add a valid key in
+            <code className="bg-muted px-1 py-0.5 rounded ml-1">src/config/google-maps.ts</code>
+            or set VITE_GOOGLE_MAPS_API_KEY. Enable “Maps JavaScript API” and “Places API”, attach billing, and restrict by HTTP referrer.
+          </p>
+        </div>
+      ) : (
+        <LoadScript 
+          googleMapsApiKey={apiKey} 
+          libraries={['places']}
+          onLoad={() => setIsLoaded(true)}
+          onError={() => {
+            setIsLoaded(false);
+            toast.error('Google Maps failed to load. Check API key, billing, and referrer restrictions.');
           }}
         >
-          {/* User location marker */}
-          {isLoaded && (
-            <Marker
-              position={location}
-              icon={{
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 10,
-                fillColor: '#ef4444',
-                fillOpacity: 1,
-                strokeColor: '#ffffff',
-                strokeWeight: 3,
-              }}
-              title="Your Location"
-            />
-          )}
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            center={location}
+            zoom={14}
+            onLoad={(map) => {
+              fetchNearbySafePlaces(map);
+            }}
+            options={{
+              zoomControl: true,
+              streetViewControl: false,
+              mapTypeControl: false,
+              fullscreenControl: true,
+            }}
+          >
+            {/* User location marker */}
+            {isLoaded && (
+              <Marker
+                position={location}
+                icon={{
+                  path: google.maps.SymbolPath.CIRCLE,
+                  scale: 10,
+                  fillColor: '#ef4444',
+                  fillOpacity: 1,
+                  strokeColor: '#ffffff',
+                  strokeWeight: 3,
+                }}
+                title="Your Location"
+              />
+            )}
 
-          {/* Safe place markers */}
-          {isLoaded && safePlaces.map((place) => (
-            <Marker
-              key={place.id}
-              position={place.location}
-              onClick={() => setSelectedPlace(place)}
-              icon={{
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 12,
-                fillColor: getMarkerColor(place.type),
-                fillOpacity: 1,
-                strokeColor: '#ffffff',
-                strokeWeight: 3,
-              }}
-              label={{
-                text: getMarkerIcon(place.type),
-                fontSize: '16px',
-              }}
-            />
-          ))}
+            {/* Safe place markers */}
+            {isLoaded && safePlaces.map((place) => (
+              <Marker
+                key={place.id}
+                position={place.location}
+                onClick={() => setSelectedPlace(place)}
+                icon={{
+                  path: google.maps.SymbolPath.CIRCLE,
+                  scale: 12,
+                  fillColor: getMarkerColor(place.type),
+                  fillOpacity: 1,
+                  strokeColor: '#ffffff',
+                  strokeWeight: 3,
+                }}
+                label={{
+                  text: getMarkerIcon(place.type),
+                  fontSize: '16px',
+                }}
+              />
+            ))}
 
-          {/* Info window for selected place */}
-          {selectedPlace && (
-            <InfoWindow
-              position={selectedPlace.location}
-              onCloseClick={() => setSelectedPlace(null)}
-            >
-              <div className="p-2">
-                <p className="font-semibold text-base mb-1">{selectedPlace.name}</p>
-                <p className="text-sm text-gray-600 capitalize">
-                  {selectedPlace.type.replace('_', ' ')}
-                </p>
-                {selectedPlace.vicinity && (
-                  <p className="text-xs text-gray-500 mt-1">{selectedPlace.vicinity}</p>
-                )}
-              </div>
-            </InfoWindow>
-          )}
-        </GoogleMap>
-      </LoadScript>
+            {/* Info window for selected place */}
+            {selectedPlace && (
+              <InfoWindow
+                position={selectedPlace.location}
+                onCloseClick={() => setSelectedPlace(null)}
+              >
+                <div className="p-2">
+                  <p className="font-semibold text-base mb-1">{selectedPlace.name}</p>
+                  <p className="text-sm text-gray-600 capitalize">
+                    {selectedPlace.type.replace('_', ' ')}
+                  </p>
+                  {selectedPlace.vicinity && (
+                    <p className="text-xs text-gray-500 mt-1">{selectedPlace.vicinity}</p>
+                  )}
+                </div>
+              </InfoWindow>
+            )}
+          </GoogleMap>
+        </LoadScript>
+      )}
       
       <p className="text-xs text-muted-foreground mt-2 text-center p-2">
         💡 Update your Google Maps API key in{' '}
