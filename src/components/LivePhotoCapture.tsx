@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Camera, X } from "lucide-react";
+import { Camera, X, Send } from "lucide-react";
 import { toast } from "sonner";
 
 export const LivePhotoCapture = () => {
@@ -52,6 +52,14 @@ export const LivePhotoCapture = () => {
     toast.info("Photo cleared");
   };
 
+  const submitPhoto = () => {
+    if (capturedPhoto) {
+      // Here you can send the photo to your backend or save it
+      toast.success("Photo submitted successfully!");
+      setCapturedPhoto(null);
+    }
+  };
+
   return (
     <Card className="shadow-soft">
       <CardHeader>
@@ -90,10 +98,16 @@ export const LivePhotoCapture = () => {
         {capturedPhoto && (
           <div className="space-y-4">
             <img src={capturedPhoto} alt="Captured" className="w-full rounded-lg" />
-            <Button onClick={clearPhoto} variant="outline" className="w-full">
-              <X className="w-4 h-4 mr-2" />
-              Clear Photo
-            </Button>
+            <div className="flex gap-2">
+              <Button onClick={submitPhoto} className="flex-1">
+                <Send className="w-4 h-4 mr-2" />
+                Submit Photo
+              </Button>
+              <Button onClick={clearPhoto} variant="outline">
+                <X className="w-4 h-4 mr-2" />
+                Clear
+              </Button>
+            </div>
           </div>
         )}
 

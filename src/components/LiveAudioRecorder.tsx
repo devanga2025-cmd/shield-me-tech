@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mic, Square, Play, X } from "lucide-react";
+import { Mic, Square, Play, X, Send } from "lucide-react";
 import { toast } from "sonner";
 
 export const LiveAudioRecorder = () => {
@@ -69,6 +69,18 @@ export const LiveAudioRecorder = () => {
     toast.info("Audio cleared");
   };
 
+  const submitAudio = () => {
+    if (recordedAudio) {
+      // Here you can send the audio to your backend or save it
+      toast.success("Audio submitted successfully!");
+      if (recordedAudio) {
+        URL.revokeObjectURL(recordedAudio);
+      }
+      setRecordedAudio(null);
+      setRecordingTime(0);
+    }
+  };
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -112,10 +124,16 @@ export const LiveAudioRecorder = () => {
             <div className="bg-muted p-4 rounded-lg">
               <audio src={recordedAudio} controls className="w-full" />
             </div>
-            <Button onClick={clearAudio} variant="outline" className="w-full">
-              <X className="w-4 h-4 mr-2" />
-              Clear Audio
-            </Button>
+            <div className="flex gap-2">
+              <Button onClick={submitAudio} className="flex-1">
+                <Send className="w-4 h-4 mr-2" />
+                Submit Audio
+              </Button>
+              <Button onClick={clearAudio} variant="outline">
+                <X className="w-4 h-4 mr-2" />
+                Clear
+              </Button>
+            </div>
           </div>
         )}
       </CardContent>
