@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Square, Play, X } from "lucide-react";
+import { Video, Square, Play, X, Send } from "lucide-react";
 import { toast } from "sonner";
 
 export const LiveVideoRecorder = () => {
@@ -72,6 +72,17 @@ export const LiveVideoRecorder = () => {
     toast.info("Video cleared");
   };
 
+  const submitVideo = () => {
+    if (recordedVideo) {
+      // Here you can send the video to your backend or save it
+      toast.success("Video submitted successfully!");
+      if (recordedVideo) {
+        URL.revokeObjectURL(recordedVideo);
+      }
+      setRecordedVideo(null);
+    }
+  };
+
   return (
     <Card className="shadow-soft">
       <CardHeader>
@@ -111,10 +122,16 @@ export const LiveVideoRecorder = () => {
               controls
               className="w-full rounded-lg bg-muted"
             />
-            <Button onClick={clearVideo} variant="outline" className="w-full">
-              <X className="w-4 h-4 mr-2" />
-              Clear Video
-            </Button>
+            <div className="flex gap-2">
+              <Button onClick={submitVideo} className="flex-1">
+                <Send className="w-4 h-4 mr-2" />
+                Submit Video
+              </Button>
+              <Button onClick={clearVideo} variant="outline">
+                <X className="w-4 h-4 mr-2" />
+                Clear
+              </Button>
+            </div>
           </div>
         )}
       </CardContent>

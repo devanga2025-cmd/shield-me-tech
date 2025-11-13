@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { getGoogleMapsApiKey } from '@/config/google-maps';
 
 interface LocationMapProps {
-  location: { lat: number; lng: number };
+  location?: { lat: number; lng: number };
 }
 
 interface SafePlace {
@@ -22,6 +22,10 @@ const mapContainerStyle = {
 };
 
 const LocationMap = ({ location }: LocationMapProps) => {
+  // Default to Bangalore, India coordinates if no location provided
+  const defaultLocation = { lat: 12.881362, lng: 77.7367596 };
+  const mapCenter = location || defaultLocation;
+  
   const [safePlaces, setSafePlaces] = useState<SafePlace[]>([]);
   const [selectedPlace, setSelectedPlace] = useState<SafePlace | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -42,7 +46,7 @@ const LocationMap = ({ location }: LocationMapProps) => {
 
     types.forEach(({ type, keyword }) => {
       const request = {
-        location: new google.maps.LatLng(location.lat, location.lng),
+        location: new google.maps.LatLng(mapCenter.lat, mapCenter.lng),
         radius: 5000, // 5km radius
         keyword: keyword,
       };
@@ -113,8 +117,8 @@ const LocationMap = ({ location }: LocationMapProps) => {
         >
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
-            center={location}
-            zoom={14}
+            center={mapCenter}
+            zoom={12}
             onLoad={(map) => {
               fetchNearbySafePlaces(map);
             }}
@@ -126,7 +130,7 @@ const LocationMap = ({ location }: LocationMapProps) => {
             }}
           >
             {/* User location marker */}
-            {isLoaded && (
+            {isLoaded && location && (
               <Marker
                 position={location}
                 icon={{
