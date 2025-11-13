@@ -35,7 +35,7 @@ const Landing = () => {
                 variant="hero"
                 size="lg"
                 onClick={() => navigate("/signup")}
-                className="min-w-[200px] bg-white text-primary hover:bg-white/90"
+                className="min-w-[200px]"
               >
                 Get Started
               </Button>
