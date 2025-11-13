@@ -24,6 +24,7 @@ const mapContainerStyle = {
 const LocationMap = ({ location }: LocationMapProps) => {
   const [safePlaces, setSafePlaces] = useState<SafePlace[]>([]);
   const [selectedPlace, setSelectedPlace] = useState<SafePlace | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   const apiKey = getGoogleMapsApiKey();
 
   // Fetch nearby safe places using Google Places API
@@ -91,7 +92,11 @@ const LocationMap = ({ location }: LocationMapProps) => {
 
   return (
     <div className="relative w-full rounded-lg overflow-hidden shadow-glow border border-border">
-      <LoadScript googleMapsApiKey={apiKey} libraries={['places']}>
+      <LoadScript 
+        googleMapsApiKey={apiKey} 
+        libraries={['places']}
+        onLoad={() => setIsLoaded(true)}
+      >
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={location}
@@ -107,21 +112,23 @@ const LocationMap = ({ location }: LocationMapProps) => {
           }}
         >
           {/* User location marker */}
-          <Marker
-            position={location}
-            icon={{
-              path: google.maps.SymbolPath.CIRCLE,
-              scale: 10,
-              fillColor: '#ef4444',
-              fillOpacity: 1,
-              strokeColor: '#ffffff',
-              strokeWeight: 3,
-            }}
-            title="Your Location"
-          />
+          {isLoaded && (
+            <Marker
+              position={location}
+              icon={{
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 10,
+                fillColor: '#ef4444',
+                fillOpacity: 1,
+                strokeColor: '#ffffff',
+                strokeWeight: 3,
+              }}
+              title="Your Location"
+            />
+          )}
 
           {/* Safe place markers */}
-          {safePlaces.map((place) => (
+          {isLoaded && safePlaces.map((place) => (
             <Marker
               key={place.id}
               position={place.location}
