@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Shield, Heart, Users } from "lucide-react";
+import { Shield, Heart, Users, Download } from "lucide-react";
 import heroImage from "@/assets/hero-empowerment.jpg";
 
 const Landing = () => {
@@ -46,6 +46,18 @@ const Landing = () => {
                 className="min-w-[200px] border-white text-white hover:bg-white hover:text-primary"
               >
                 Login
+              </Button>
+            </div>
+            
+            <div className="pt-6">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/install")}
+                className="text-white/80 hover:text-white hover:bg-white/10"
+              >
+                <Download className="mr-2 h-4 w-4" />
+                Install Mobile App
               </Button>
             </div>
           </div>
