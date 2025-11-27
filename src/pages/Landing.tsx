@@ -51,10 +51,9 @@ const Landing = () => {
             
             <div className="pt-6">
               <Button
-                variant="ghost"
                 size="sm"
                 onClick={() => navigate("/install")}
-                className="text-white/80 hover:text-white hover:bg-white/10"
+                className="bg-white/20 text-white hover:bg-white hover:text-primary backdrop-blur-sm border border-white/30 hover:scale-105 transition-all duration-300"
               >
                 <Download className="mr-2 h-4 w-4" />
                 Install Mobile App
