@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,8 +16,8 @@ import {
   User
 } from "lucide-react";
 import { LivePhotoCapture } from "@/components/LivePhotoCapture";
-import { LiveVideoRecorder } from "@/components/LiveVideoRecorder";
-import { LiveAudioRecorder } from "@/components/LiveAudioRecorder";
+import { LiveVideoRecorder, LiveVideoRecorderRef } from "@/components/LiveVideoRecorder";
+import { LiveAudioRecorder, LiveAudioRecorderRef } from "@/components/LiveAudioRecorder";
 import { FeedbackForm } from "@/components/FeedbackForm";
 import LocationMap from "@/components/LocationMap";
 
@@ -26,6 +26,8 @@ const Dashboard = () => {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [showEmergencyInfo, setShowEmergencyInfo] = useState(false);
+  const videoRecorderRef = useRef<LiveVideoRecorderRef>(null);
+  const audioRecorderRef = useRef<LiveAudioRecorderRef>(null);
 
   useEffect(() => {
     const user = localStorage.getItem("currentUser");
@@ -42,6 +44,10 @@ const Dashboard = () => {
     toast.success("Emergency alert activated! Help is on the way!", {
       duration: 5000,
     });
+
+    // Start video and audio recording automatically
+    videoRecorderRef.current?.startRecording();
+    audioRecorderRef.current?.startRecording();
 
     // Get user location
     if (navigator.geolocation) {
@@ -269,8 +275,8 @@ const Dashboard = () => {
 
         {/* Live Recording & Feedback Section */}
         <div className="grid lg:grid-cols-2 gap-8 mt-8">
-          <LiveVideoRecorder />
-          <LiveAudioRecorder />
+          <LiveVideoRecorder ref={videoRecorderRef} />
+          <LiveAudioRecorder ref={audioRecorderRef} />
         </div>
 
         <div className="mt-8">
