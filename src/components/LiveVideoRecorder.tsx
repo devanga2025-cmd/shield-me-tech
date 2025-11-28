@@ -1,10 +1,14 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useImperativeHandle, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Video, Square, Play, X, Send } from "lucide-react";
 import { toast } from "sonner";
 
-export const LiveVideoRecorder = () => {
+export interface LiveVideoRecorderRef {
+  startRecording: () => void;
+}
+
+export const LiveVideoRecorder = forwardRef<LiveVideoRecorderRef>((props, ref) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordedVideo, setRecordedVideo] = useState<string | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -83,6 +87,10 @@ export const LiveVideoRecorder = () => {
     }
   };
 
+  useImperativeHandle(ref, () => ({
+    startRecording
+  }));
+
   return (
     <Card className="shadow-soft">
       <CardHeader>
@@ -137,4 +145,4 @@ export const LiveVideoRecorder = () => {
       </CardContent>
     </Card>
   );
-};
+});

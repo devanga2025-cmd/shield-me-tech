@@ -1,10 +1,14 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useImperativeHandle, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mic, Square, Play, X, Send } from "lucide-react";
 import { toast } from "sonner";
 
-export const LiveAudioRecorder = () => {
+export interface LiveAudioRecorderRef {
+  startRecording: () => void;
+}
+
+export const LiveAudioRecorder = forwardRef<LiveAudioRecorderRef>((props, ref) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordedAudio, setRecordedAudio] = useState<string | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
@@ -87,6 +91,10 @@ export const LiveAudioRecorder = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  useImperativeHandle(ref, () => ({
+    startRecording
+  }));
+
   return (
     <Card className="shadow-soft">
       <CardHeader>
@@ -139,4 +147,4 @@ export const LiveAudioRecorder = () => {
       </CardContent>
     </Card>
   );
-};
+});
