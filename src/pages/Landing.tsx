@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Shield, Heart, Users, Download } from "lucide-react";
 import heroImage from "@/assets/hero-empowerment.jpg";
+import appLogo from "@/assets/app-logo.jpg";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -23,8 +24,9 @@ const Landing = () => {
 
         <div className="relative z-10 container mx-auto px-4 text-center text-white">
           <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
+            <img src={appLogo} alt="Safety SheIld Logo" className="w-32 h-32 mx-auto rounded-2xl shadow-glow" />
             <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-              Empowering Women's Safety
+              Safety SheIld
             </h1>
             <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto">
               Anytime, Anywhere — Your Safety, Our Priority
@@ -146,7 +148,7 @@ const Landing = () => {
       <footer className="bg-foreground text-white py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm">© 2024 Women Safety Portal. Empowering women everywhere.</p>
+            <p className="text-sm">© 2024 Safety SheIld. Empowering women everywhere.</p>
             <div className="flex gap-6">
               <a href="tel:112" className="hover:text-primary transition-colors">
                 Emergency: 112

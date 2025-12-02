@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, Smartphone, Shield, CheckCircle } from "lucide-react";
+import { Download, Smartphone, CheckCircle } from "lucide-react";
+import appLogo from "@/assets/app-logo.jpg";
 import { useNavigate } from "react-router-dom";
 
 const Install = () => {
@@ -39,10 +40,8 @@ const Install = () => {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 flex items-center justify-center p-4">
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center space-y-4">
-          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center">
-            <Shield className="w-10 h-10 text-white" />
-          </div>
-          <CardTitle className="text-3xl">Install Women Safety Portal</CardTitle>
+          <img src={appLogo} alt="Safety SheIld Logo" className="mx-auto w-24 h-24 rounded-2xl shadow-soft" />
+          <CardTitle className="text-3xl">Install Safety SheIld</CardTitle>
           <CardDescription className="text-base">
             Get quick access to emergency features right from your home screen
           </CardDescription>
