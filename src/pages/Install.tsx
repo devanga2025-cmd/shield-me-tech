@@ -3,10 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, Smartphone, CheckCircle } from "lucide-react";
 import appLogo from "@/assets/app-logo.jpg";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Install = () => {
-  const navigate = useNavigate();
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isInstallable, setIsInstallable] = useState(false);
 
@@ -109,12 +108,12 @@ const Install = () => {
               </div>
               
               <Button 
-                onClick={() => navigate("/")}
+                asChild
                 variant="outline"
                 className="w-full"
                 size="lg"
               >
-                Continue to App
+                <Link to="/">Continue to App</Link>
               </Button>
             </div>
           )}
