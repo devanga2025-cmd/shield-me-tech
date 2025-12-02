@@ -9,12 +9,12 @@ import {
   AlertTriangle, 
   Phone, 
   MapPin, 
-  Shield,
   LogOut,
   Heart,
   Info,
   User
 } from "lucide-react";
+import appLogo from "@/assets/app-logo.jpg";
 import { LivePhotoCapture } from "@/components/LivePhotoCapture";
 import { LiveVideoRecorder, LiveVideoRecorderRef } from "@/components/LiveVideoRecorder";
 import { LiveAudioRecorder, LiveAudioRecorderRef } from "@/components/LiveAudioRecorder";
@@ -82,9 +82,9 @@ const Dashboard = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <Shield className="w-8 h-8" />
+              <img src={appLogo} alt="Safety SheIld Logo" className="w-12 h-12 rounded-lg" />
               <div>
-                <h1 className="text-2xl font-bold">Women Safety Portal</h1>
+                <h1 className="text-2xl font-bold">Safety SheIld</h1>
                 <p className="text-white/80 text-sm">Welcome, {currentUser.name}</p>
               </div>
             </div>

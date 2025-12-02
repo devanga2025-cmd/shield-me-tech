@@ -15,10 +15,10 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["icon-512x512.png", "icon-192x192.png"],
+      includeAssets: ["app-logo.jpg"],
       manifest: {
-        name: "Women Safety Portal",
-        short_name: "SafetyPortal",
+        name: "Safety SheIld",
+        short_name: "SafetySheild",
         description: "Comprehensive women's safety platform with 24/7 emergency alerts, safety resources, and community support",
         theme_color: "#9b87f5",
         background_color: "#1A1F2C",
@@ -27,15 +27,15 @@ export default defineConfig(({ mode }) => ({
         start_url: "/",
         icons: [
           {
-            src: "icon-192x192.png",
+            src: "app-logo.jpg",
             sizes: "192x192",
-            type: "image/png",
+            type: "image/jpeg",
             purpose: "any maskable"
           },
           {
-            src: "icon-512x512.png",
+            src: "app-logo.jpg",
             sizes: "512x512",
-            type: "image/png",
+            type: "image/jpeg",
             purpose: "any maskable"
           }
         ]

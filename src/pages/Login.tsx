@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Shield } from "lucide-react";
+import appLogo from "@/assets/app-logo.jpg";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -64,9 +64,7 @@ const Login = () => {
     <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-glow animate-scale-in">
         <CardHeader className="space-y-3 text-center">
-          <div className="w-16 h-16 bg-gradient-hero rounded-full flex items-center justify-center mx-auto">
-            <Shield className="w-8 h-8 text-white" />
-          </div>
+          <img src={appLogo} alt="Safety SheIld Logo" className="w-20 h-20 mx-auto rounded-xl shadow-soft" />
           <CardTitle className="text-3xl font-bold">Welcome Back</CardTitle>
           <CardDescription>
             Login to access your safety dashboard
